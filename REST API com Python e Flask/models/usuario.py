@@ -25,15 +25,15 @@ class UserModel(banco.Model):
     def send_confirmation_email(self):
         # http://127.0.0.1:5000/confirmacao/{user_id}
         link = request.url_root[:-1] + url_for('userconfirm', user_id=self.user_id)
-        return post('https://api.mailgun.net/v3/{}/messages'.format(MAILGUN_DOMAIN),
+        return post(f'https://api.mailgun.net/v3/{MAILGUN_DOMAIN}/messages',
                     auth=('api', MAILGUN_API_KEY),
-                    data={'from': '{} <{}>'.format(FROM_TITLE, FROM_EMAIL),
+                    data={f'from': '{FROM_TITLE} <{FROM_EMAIL}>',
                           'to': self.email,
                           'subject': 'Confirmação de Cadastro',
-                          'text': 'Confirme seu cadastro clicando no link a seguir: {}'.format(link),
-                          'html': '<html><p>\
-                          Confirme seu cadastro clicando no link a seguir: <a href="{}">CONFIRMAR EMAIL</a>\
-                          </p></html>'.format(link)
+                          'text': f'Confirme seu cadastro clicando no link a seguir: {link}',
+                          'html': f'<html><p>\
+                          Confirme seu cadastro clicando no link a seguir: <a href="{link}">CONFIRMAR EMAIL</a>\
+                          </p></html>'
                           }
                    )
 
